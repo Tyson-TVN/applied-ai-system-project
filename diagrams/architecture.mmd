@@ -1,0 +1,38 @@
+flowchart TD
+    U([User types a request<br/>e.g. 'calm songs for studying']) --> G1
+
+    subgraph AGENT["MusicAgent.run (src/agent.py)"]
+        G1{"1. Input guardrail<br/>check_request<br/>empty / too long / injection / off-topic"}
+        G1 -- blocked --> B([Blocked with a reason])
+        G1 -- ok --> R["2. Retrieve guide notes<br/>retriever.py<br/>keyword match"]
+        KB[("knowledge/genre_guide.md<br/>21 activity + genre notes")] --> R
+        R --> P{"3. Plan taste profile"}
+        P -- Gemini available --> PL["LLM planner<br/>few-shot prompt + notes<br/>returns JSON + reasoning"]
+        P -- no key or bad JSON --> PK["Keyword planner<br/>uses note Profile hints"]
+        PL --> V["4. Validate profile<br/>validate_profile<br/>map labels, clamp numbers, drop junk"]
+        PK --> V
+        V --> T["5. Tool call: recommend_songs<br/>Module 3 scoring engine<br/>top 8 candidates + diversity penalty"]
+        CSV[("data/songs.csv<br/>25 songs")] --> T
+        T --> W{"6. Write answer"}
+        W -- Gemini available --> WL["LLM writer<br/>picks 3-5 songs from candidates only"]
+        WL --> VER{"7. Verify answer<br/>verify_answer<br/>every title must be a candidate"}
+        VER -- fails once --> WL
+        VER -- fails twice --> WT
+        W -- no key --> WT["Template answer<br/>straight from scoring engine"]
+        VER -- passes --> C
+        WT --> C["8. Confidence score 0-1"]
+    end
+
+    C --> OUT([CLI shows picks, reasons,<br/>profile, confidence])
+    OUT --> H{"Human in the loop<br/>Good? / tweak / low-confidence warning"}
+    H -- tweak like 'more upbeat' --> U
+    H -- yes --> DONE([Done])
+
+    AGENT -. every step .-> LOG[["logs/agent_trace.md<br/>logs/app.log"]]
+
+    subgraph TESTING["Testing and evaluation"]
+        PT["pytest: 32 unit tests<br/>fake LLM client"]
+        EV["eval/run_eval.py<br/>12 cases, pass/fail summary"]
+        CP["eval/compare_prompts.py<br/>zero-shot vs few-shot"]
+    end
+    TESTING -. checks .-> AGENT
