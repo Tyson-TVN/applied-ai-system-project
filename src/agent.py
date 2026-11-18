@@ -249,7 +249,7 @@ class MusicAgent:
         os.makedirs(os.path.dirname(self.trace_path), exist_ok=True)
         stamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         lines = [f"### {stamp} | request: \"{result.request}\"", ""]
-        lines += [f"- {re.sub(r'\s+', ' ', line)}" for line in result.trace]
+        lines += ["- " + re.sub(r"\s+", " ", line) for line in result.trace]
         if not result.blocked:
             lines.append(f"- **Final picks:** {', '.join(p['title'] for p in result.picks)}")
         lines += ["", ""]

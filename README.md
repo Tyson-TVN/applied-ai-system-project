@@ -33,7 +33,7 @@ That original program still runs (`python -m src.main`), and its scoring code is
 
 ## Architecture
 
-The source for this diagram is [`diagrams/architecture.mmd`](diagrams/architecture.mmd).
+The source for the full diagram is [`diagrams/architecture.mmd`](diagrams/architecture.mmd), and there is an exported image of it at [`assets/architecture.png`](assets/architecture.png). The version below is slightly simplified so it fits on the page.
 
 ```mermaid
 flowchart TD
