@@ -1,4 +1,4 @@
-pandas
-pytest
-streamlit
 tabulate
+pytest
+google-genai>=1.0.0
+python-dotenv

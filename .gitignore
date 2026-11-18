@@ -13,3 +13,9 @@ venv/
 
 # Pytest cache
 .pytest_cache/
+
+# Secrets
+.env
+
+# Runtime log (the agent trace in logs/agent_trace.md is committed on purpose)
+logs/app.log
