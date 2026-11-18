@@ -75,17 +75,17 @@ If this were a real product I would also add rate limiting per user, and I would
 
 ## 7. Collaboration with AI
 
-I built this project with Claude (Claude Code in the desktop app), and its use was heavy. Here's how the work was split:
+I built this project with Claude (Claude Code extension in the VS Code app), and its use ranged from minor assistance to heavy-lifting. Here's how the work was split:
 
-- **Planning:** I pasted the assignment and the rubric and asked it to analyze my Module 3 project. It read my old code and docs and proposed the agent + RAG + guardrails design. I reviewed the plan in plan mode before anything was built and approved it.
-- **Code and docs:** Claude wrote most of the code, tests and the first drafts of these docs, and committed after each feature. I set the rules: plain writing in my voice, separate commits per feature, and no AI co-author line on commits.
-- **My part:** I set up the repo, created the Gemini API key and `.env` myself (Claude never saw the key), made the calls on what to keep, and reviewed the outputs.
+- **Planning:** I explained the assignment and the rubric and asked it to analyze my Module 3 project. It read my old code and docs and proposed the agent + RAG + guardrails design. I reviewed the plan in plan mode before anything was built and approved it.
+- **Code and docs:** Claude wrote most of the code, tests and the first drafts of these docs, and I committed after each feature. I gave some writing and had Claude expand on it for the documentation parts.
+- **My part:** I set up the repo, created the Gemini API key and `.env` myself (Claude never saw the key), prompted Claude, made the calls on what to keep, and reviewed the outputs.
 - **Debugging:** when the live eval showed the writer failing verification, we read the failure messages in `logs/app.log` together. That's how we found that the "Title by Artist" format was the cause.
 
 **A suggestion I accepted:** when the writer kept failing verification, one option was to loosen the verifier so it would strip " by Artist" from titles. Claude suggested keeping the verifier strict and fixing what the model was shown instead: the candidate list format and one prompt rule. I agreed, because a verifier that bends to fit the model's mistakes stops being a check. It worked: first-try passes went from 1/8 to 7/8 (section 6).
 
 **A suggestion I rejected or changed:**
-- Claude's default was to end every commit message with a "Co-Authored-By: Claude" line. I didn't want that in my commit history, so I told it to leave it off. The AI use is documented here instead, where it is graded.
+- Claude's default was to end every commit message with a "Co-Authored-By: Claude" line whenever I had Claude make the commits. I didn't want that in my commit history, so I told it to leave it off. The AI use is documented here instead, where it is graded.
 - Claude's first version of the Gemini client used the model name `gemini-flash-lite-latest`, carried over from my BugHound project. That turned out to be wrong for a new key (404 error), so it was changed to `gemini-3.5-flash-lite` after we listed the models my key could actually use.
 - A test Claude wrote assumed "k-pop" would be removed as an unknown genre. The test failed because fuzzy matching maps it to "pop". We kept that behavior and rewrote the test to document it, and I listed it as a limitation in section 4.
 
