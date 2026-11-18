@@ -1,0 +1,18 @@
+VibeFinder evaluation - mode: offline
+
+|   # | Case           | Planner/Writer   | Top pick            | Conf   | Result   | Check                                         |
+|-----|----------------|------------------|---------------------|--------|----------|-----------------------------------------------|
+|   1 | study          | keyword/template | Midnight Coding     | 0.83   | PASS     | top 3 picks have energy <= 0.5                |
+|   2 | workout        | keyword/template | Gym Hero            | 0.87   | PASS     | top 3 picks have energy >= 0.8                |
+|   3 | breakup        | keyword/template | Rainy Highway Blues | 0.88   | PASS     | 2+ of top 3 are sad                           |
+|   4 | morning pop    | keyword/template | Sunrise City        | 0.83   | PASS     | first pick is pop or indie pop                |
+|   5 | coffee jazz    | keyword/template | Coffee Shop Stories | 0.66   | PASS     | a jazz song is picked                         |
+|   6 | venting        | keyword/template | Iron Requiem        | 0.80   | PASS     | an aggressive song in top 3                   |
+|   7 | sleep          | keyword/template | Glass Garden        | 0.75   | PASS     | top 3 picks have energy <= 0.35               |
+|   8 | not in catalog | keyword/template | Fuego Nocturno      | 0.82   | PASS     | still answers with 3+ real songs              |
+|   9 | empty          | -                | -                   | -      | PASS     | The request is empty. Describe the music you  |
+|  10 | injection      | -                | -                   | -      | PASS     | The request looks like an attempt to change t |
+|  11 | off-topic      | -                | -                   | -      | PASS     | This does not look like a music request. Try  |
+|  12 | too long       | -                | -                   | -      | PASS     | The request is too long (479 characters, limi |
+
+Summary: 12/12 passed | average confidence 0.80 on 8 answered requests | 8 used a fallback step
