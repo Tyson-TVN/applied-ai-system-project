@@ -78,7 +78,7 @@ If this were a real product I would also add rate limiting per user, and I would
 I built this project with Claude (Claude Code extension in the VS Code app), and its use ranged from minor assistance to heavy-lifting. Here's how the work was split:
 
 - **Planning:** I explained the assignment and the rubric and asked it to analyze my Module 3 project. It read my old code and docs and proposed the agent + RAG + guardrails design. I reviewed the plan in plan mode before anything was built and approved it.
-- **Code and docs:** Claude wrote most of the code, tests and the first drafts of these docs, and I committed after each feature. I gave some writing and had Claude expand on it for the documentation parts.
+- **Code and docs:** Claude wrote most of the code, tests and the first drafts of these docs, and I committed after most features. I gave some writing and had Claude expand on it for the documentation parts.
 - **My part:** I set up the repo, created the Gemini API key and `.env` myself (Claude never saw the key), prompted Claude, made the calls on what to keep, and reviewed the outputs.
 - **Debugging:** when the live eval showed the writer failing verification, we read the failure messages in `logs/app.log` together. That's how we found that the "Title by Artist" format was the cause.
 
