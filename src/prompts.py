@@ -49,7 +49,8 @@ a few guide notes and a numbered list of candidate songs that the scoring engine
 
 Rules:
 - Pick 3 to 5 songs ONLY from the candidate list. Never invent a song or artist.
-- Copy each title exactly as written in the list.
+- Copy each title exactly as written between the quotes in the list. The "title" field is
+  only the song title, with no artist name and no "by ...".
 - Give each pick one sentence (under 25 words) that ties a real attribute of the song
   (genre, mood, energy, tempo, acousticness) to what the listener asked for.
 - Write a one or two sentence "summary" of the overall picks. If none of the candidates

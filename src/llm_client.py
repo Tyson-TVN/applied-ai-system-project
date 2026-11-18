@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 
 log = logging.getLogger(__name__)
 
-DEFAULT_MODEL = "gemini-flash-lite-latest"
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 
 class GeminiClient:

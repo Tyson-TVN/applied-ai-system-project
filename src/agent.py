@@ -176,12 +176,13 @@ class MusicAgent:
             for attempt in (1, 2):
                 reply = self.client.complete(system, user)
                 ok, answer, problems = verify_answer(reply, titles)
+                self._record(result, f"[6 write] attempt {attempt}: LLM reply {_short(reply, 250) or '(empty)'}")
                 if ok:
                     result.writer = "llm" if attempt == 1 else "llm (retry)"
                     result.summary = answer["summary"]
                     result.picks = self._attach_details(answer["picks"], candidates)
-                    self._record(result, f"[6 write] LLM picked {[p['title'] for p in result.picks]}")
-                    self._record(result, f"[7 verify] passed on attempt {attempt}")
+                    self._record(result, f"[7 verify] passed on attempt {attempt}: "
+                                         f"{[p['title'] for p in result.picks]}")
                     return
                 self._record(result, f"[7 verify] attempt {attempt} FAILED: {'; '.join(problems)}")
                 # Tell the model exactly what was wrong and try once more.
@@ -202,7 +203,7 @@ class MusicAgent:
     def _writer_input(self, request: str, hits, candidates) -> str:
         notes = "\n".join(f"- {n.title}: {n.text}" for n, _ in hits) or "- none"
         lines = [
-            f"{i}. {s['title']} by {s['artist']} | genre {s['genre']} | mood {s['mood']} | "
+            f"{i}. title: \"{s['title']}\" | artist: {s['artist']} | genre {s['genre']} | mood {s['mood']} | "
             f"energy {s['energy']} | tempo {s['tempo_bpm']:g} | acousticness {s['acousticness']} "
             f"| match score {score:.2f}"
             for i, (s, score, _) in enumerate(candidates, start=1)
