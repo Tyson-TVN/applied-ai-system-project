@@ -69,11 +69,13 @@ def main() -> None:
     parser.add_argument("request", nargs="?", help="what you want to listen to")
     parser.add_argument("--offline", action="store_true", help="skip Gemini and use the rule-based fallback")
     parser.add_argument("--show-trace", action="store_true", help="print every agent step")
+    parser.add_argument("--no-guide", action="store_true",
+                        help="turn off the genre guide (to compare results with and without retrieval)")
     args = parser.parse_args()
 
     setup_logging()
     client = get_client(offline=args.offline)
-    agent = MusicAgent(client=client)
+    agent = MusicAgent(client=client, notes=[] if args.no_guide else None)
     print(f"Running in {'Gemini' if client else 'offline'} mode.\n")
 
     if args.request is None:

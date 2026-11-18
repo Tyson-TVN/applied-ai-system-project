@@ -35,18 +35,20 @@ REQUESTS = [
 ]
 
 
-def evaluate(profile, genres, expected_genres, band):
-    """Return (valid json, genre is a real catalog label, expected genre hit, energy in band)."""
+def evaluate(profile, genres, moods, expected_genres, band):
+    """Return (valid json, real genre label, real mood label, expected genre hit, energy in band)."""
     if profile is None:
-        return False, False, False, False
+        return False, False, False, False, False
     genre = str(profile.get("genre", "")).strip().lower()
     in_catalog = genre in genres if genre else expected_genres is None
+    mood = str(profile.get("mood", "")).strip().lower()
+    mood_ok = mood in moods if mood else True
     hit = (genre in expected_genres) if expected_genres else in_catalog
     try:
         energy_ok = band[0] <= float(profile.get("energy")) <= band[1]
     except (TypeError, ValueError):
         energy_ok = False
-    return True, in_catalog, hit, energy_ok
+    return True, in_catalog, mood_ok, hit, energy_ok
 
 
 def main(delay: float = 4.0) -> None:
@@ -55,7 +57,7 @@ def main(delay: float = 4.0) -> None:
         print("This comparison needs GEMINI_API_KEY in .env.")
         return
     genres, moods = catalog_vocab(load_songs("data/songs.csv"))
-    totals = {"zero_shot": [0, 0, 0, 0], "few_shot": [0, 0, 0, 0]}
+    totals = {"zero_shot": [0] * 5, "few_shot": [0] * 5}
     rows = []
 
     for request, expected, band in REQUESTS:
@@ -63,7 +65,7 @@ def main(delay: float = 4.0) -> None:
         for style in ("zero_shot", "few_shot"):
             reply = client.complete(planner_prompt(style, genres, moods), f'Request: "{request}"')
             profile = extract_json(reply)
-            checks = evaluate(profile, genres, expected, band)
+            checks = evaluate(profile, genres, moods, expected, band)
             totals[style] = [t + c for t, c in zip(totals[style], checks)]
             if profile is None:
                 row.append("invalid JSON")
@@ -79,7 +81,8 @@ def main(delay: float = 4.0) -> None:
         print(tabulate(rows, headers=["Request", "Zero-shot (genre / mood / energy)",
                                       "Few-shot (genre / mood / energy)"], tablefmt="github"))
         print()
-        labels = ["Valid JSON", "Genre is a real catalog label", "Expected genre hit", "Energy in expected band"]
+        labels = ["Valid JSON", "Genre is a real catalog label", "Mood is a real catalog label",
+                  "Expected genre hit", "Energy in expected band"]
         summary = [[label, f"{totals['zero_shot'][i]}/{n}", f"{totals['few_shot'][i]}/{n}"]
                    for i, label in enumerate(labels)]
         print(tabulate(summary, headers=["Metric", "Zero-shot", "Few-shot"], tablefmt="github"))

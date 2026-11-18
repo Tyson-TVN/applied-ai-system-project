@@ -1,0 +1,20 @@
+Planner prompt comparison - model: gemini-3.5-flash-lite
+
+| Request                        | Zero-shot (genre / mood / energy)   | Few-shot (genre / mood / energy)   |
+|--------------------------------|-------------------------------------|------------------------------------|
+| quiet piano music for reading  | classical / peaceful / 0.1          | classical / peaceful / 0.15        |
+| songs to lift weights to       | heavy metal / aggressive / 0.95     | - / aggressive / 0.9               |
+| rainy day blues                | blues / melancholic / 0.3           | blues / moody / 0.4                |
+| smooth music for a date night  | R&B / romantic / 0.3                | jazz / romantic / 0.35             |
+| lo-fi hip hop to code to       | lo-fi hip hop / relaxed / 0.3       | lofi / focused / 0.35              |
+| rap bangers                    | rap / hype / 0.95                   | hip-hop / energetic / 0.9          |
+| festival edm drops             | EDM / hype / 1.0                    | edm / energetic / 0.95             |
+| country songs for a long drive | country / reflective / 0.6          | country / relaxed / 0.55           |
+
+| Metric                        | Zero-shot   | Few-shot   |
+|-------------------------------|-------------|------------|
+| Valid JSON                    | 8/8         | 8/8        |
+| Genre is a real catalog label | 5/8         | 8/8        |
+| Mood is a real catalog label  | 4/8         | 8/8        |
+| Expected genre hit            | 5/8         | 8/8        |
+| Energy in expected band       | 8/8         | 8/8        |
